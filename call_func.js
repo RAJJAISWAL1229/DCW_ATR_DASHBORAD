@@ -1,4 +1,4 @@
-//
+
 let productValue = null;
 let itmValue = null;
 let startDateInput = null;
@@ -693,7 +693,7 @@ YRR = commonPnL;
         }
 
       }
-      //****************************************************************************************************************************************** */
+     
       else if (selectedYAxis === "netPnL" && selectedXAxis === "Time") {
         fetch("pnl_productwise.json")
           .then((response) => response.json())
@@ -1162,7 +1162,7 @@ YRR = commonPnL;
         }
 
       }
-      //******************************************************************************************************************************************* */
+      
       else if (selectedYAxis === selectedXAxis) {
         XRR = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         YRR = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
