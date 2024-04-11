@@ -207,25 +207,15 @@ footer {
 /* Optional: Style for invalid input */
 
 
-.autocomplete-suggestions2 {
-  position: relative; /* Set position to relative */
+.autocomplete-suggestions1 {
+  position: absolute;
   background-color: #fff;
-  border: 0px solid rgb(22, 38, 82);
+  border: 0px solid rgb(167, 189, 252);
   border-radius: 5px; /* Rounded border */
-  width: calc(100% - 2px); /* Adjust width */
-  margin-top: 2px; /* Adjust margin as needed */
+  width: 9ch; /* Fixed width of 10 characters */
+  margin-top: 2px; /* Adjust as needed */
   overflow-y: auto;
-  max-height: 150px; /* Adjust max height as needed */
-  z-index: 999; /* Set a high z-index value to bring it to the front */
-}
-
-
-
-.suggestion-dropdown {
-  position: absolute; /* Set position to absolute */
-  left: 0; /* Position at the left edge of the input field */
-  top: calc(100% + 2px); /* Position below the input field */
-  width: 100%; /* Take full width of the input field */
+  max-height: 150px; /* Adjust as needed */
   z-index: 999; /* Set a high z-index value to bring it to the front */
 }
 
