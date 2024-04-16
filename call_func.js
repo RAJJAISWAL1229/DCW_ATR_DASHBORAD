@@ -1282,7 +1282,7 @@ YRR = commonPnL;
               selectedYAxis,
               startDateInput,
               endDateInput,
-              itmValue
+             
             );
 
             break;
@@ -1296,7 +1296,7 @@ YRR = commonPnL;
               startDateInput,
               endDateInput,
               productValue,
-              itmValue
+              
             );
             break;
           case "Line Chart":
@@ -1308,7 +1308,7 @@ YRR = commonPnL;
               selectedYAxis,
               startDateInput,
               endDateInput,
-              itmValue
+              
             );
             break;
           case "Pie Chart":
@@ -1320,7 +1320,7 @@ YRR = commonPnL;
               selectedYAxis,
               startDateInput,
               endDateInput,
-              itmValue
+             
             );
 
             break;
@@ -1333,7 +1333,7 @@ YRR = commonPnL;
               selectedYAxis,
               startDateInput,
               endDateInput,
-              itmValue
+             
             );
           default:
             break;
