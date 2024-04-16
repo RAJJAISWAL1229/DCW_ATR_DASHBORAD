@@ -1162,6 +1162,103 @@ YRR = commonPnL;
         }
 
       }
+        else if (selectedYAxis === "net_equity_PnL" && selectedXAxis === "Time") {
+        fetch("pnl_productwise.json")
+          .then((response) => response.json())
+          .then((data) => {
+            // Store the data in global_Pnl_data
+            const global_Pnl_data = data;
+
+            // Call your other function and pass global_Pnl_data to it
+            otherFunction(global_Pnl_data);
+          })
+          .catch((error) => console.error("Error fetching JSON:", error));
+
+        // Define your other function
+        function otherFunction(data) {
+          // Now you can access the global_Pnl_data object here
+          console.log("Inside otherFunction:");
+          console.log(data);
+
+          // Initialize an array to store new objects
+          const newData = [];
+
+          // Iterate over each object in the array
+          data.forEach((item) => {
+            // Create a new object for each item
+            const newItem = {
+              itm: item.primaryITM,
+              reportDate: new Date(item.reportDate).toLocaleDateString("en-US"),
+              ttProductCode: item.ttProductCode,
+              grossPnL: item.netPnL,
+            };
+
+            // Push the new object into the array
+            newData.push(newItem);
+          });
+
+          // Output the new array
+          console.log("New data:", newData);
+          filterData(newData, startDateInput, endDateInput,itmValue, ttProductCodes);
+        }
+        function filterData(newData, startDateInput, endDateInput, itm, ttProductCodes) {
+          // Parse the start and end dates
+          const startDate = new Date(startDateInput);
+          const endDate = new Date(endDateInput);
+        
+          // Filter newData based on the date range, itm, and ttProductCode values
+          const filteredData = newData.filter(item => {
+            const reportDate = new Date(item.reportDate);
+            return (
+              reportDate >= startDate &&
+              reportDate <= endDate &&
+              item.itm === itm &&
+              ttProductCodes.includes(item.ttProductCode)
+            );
+          });
+        
+          // Group filtered data by reportDate
+          const groupedData = filteredData.reduce((acc, item) => {
+            const dateKey = item.reportDate;
+            acc[dateKey] = acc[dateKey] || [];
+            acc[dateKey].push(item);
+            return acc;
+          }, {});
+        
+          // Calculate net_PnL_per_day
+          const netPnLPerDayData = Object.keys(groupedData).map(dateKey => {
+            const items = groupedData[dateKey];
+            const grossPnLSum = items.reduce((sum, item) => sum + item.grossPnL, 0);
+            return { reportDate: dateKey, net_PnL_per_day: grossPnLSum };
+          });
+        
+          // Output the filtered data with net_PnL_per_day
+          console.log("Filtered data with net_PnL_per_day:", netPnLPerDayData);
+          // Output the filtered data
+          console.log("Filtered data:", filteredData);
+          chech_data(netPnLPerDayData);
+          
+          // If you want to do something else with the filtered data, you can do it here
+        }
+        
+       
+        async function chech_data(all_data) {
+          console.log("All data test", all_data);
+          
+          XRR = all_data.map((entry) => entry.reportDate);
+          YRR = all_data.map((entry) => entry.net_PnL_per_day);
+          const YRR_equity = [];
+          let sum = 0;
+          for (let i = 0; i < YRR.length; i++) {
+          sum += YRR[i];
+          YRR_equity.push(sum);
+}
+
+        console.log("YRR_equity: ", YRR_equity);
+          console.log("XRR test", XRR);
+          plotchart(XRR, YRR_equity);
+        }
+      } 
       
       else if (selectedYAxis === selectedXAxis) {
         XRR = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
