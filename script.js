@@ -11,7 +11,7 @@ function createBarChart(
   Yaxis_name,
   startDateInput,
   endDateInput,
-  itmValue
+
 ) {
  
     const xArray1= XRR;
@@ -57,7 +57,7 @@ function createScatterChart(
   Yaxis_name,
   startDateInput,
   endDateInput,
-  itmValue
+ 
 ) {
   // const xArray2 = [1, 2, 3, 4, 5, 6, 7, 8, 9];
   // const yArray2 = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -78,7 +78,7 @@ function createScatterChart(
   ];
 
   const layout2 = {
-    title: Yaxis_name + "  vs  " + Xaxis_name + "  " + "\n product: " + productValue + "  ",
+    title: Yaxis_name + "  vs  " + Xaxis_name + "  " + "\n product: " + productValue + "  "+"ITM:"+itmValue,
   };
 
   Plotly.newPlot("C" + clickCount, data2, layout2);
@@ -93,7 +93,7 @@ function createLineChart(
   Yaxis_name,
   startDateInput,
   endDateInput,
-  itmValue
+  
 ) {
   const xArray3 = XRR;
   const yArray3 = YRR;
@@ -111,7 +111,7 @@ function createLineChart(
   ];
 
   const layout3 = {
-    title: Yaxis_name + "  vs  " + Xaxis_name + "  " + "\n product: " + productValue + "  ",
+    title: Yaxis_name + "  vs  " + Xaxis_name + "  " + "\n product: " + productValue + "  " + "ITM:"+itmValue,
   };
 
   Plotly.newPlot("C" + clickCount, data3, layout3);
@@ -126,13 +126,13 @@ function createPieChart(
   Yaxis_name,
   startDateInput,
   endDateInput,
-  itmValue
+  
 ) {
   const xArray4 = XRR;
   const yArray4 = YRR;
   // const xArray4 = [1, 2, 3, 4, 5, 6, 7, 8, 9];
   // const yArray4 = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-  const layout4 = { title: Yaxis_name + "  vs  " + Xaxis_name + "  " + "\n product: " + productValue + "  " };
+  const layout4 = { title: Yaxis_name + "  vs  " + Xaxis_name + "  " + "\n product: " + productValue + "  "  + "ITM:"+itmValue};
 
   const data4 = [{ labels: xArray4, values: yArray4, hole: 0.4, type: "pie" }];
 
@@ -148,7 +148,7 @@ function createStackChart(
   Yaxis_name,
   startDateInput,
   endDateInput,
-  itmValue
+  
 ) {
   const xArray5 = XRR;
   const yArray5 = YRR;
@@ -198,7 +198,7 @@ function createStackChart(
   // Set layout options
   const layout5 = {
     barmode: "stack",
-    title: "Stacked Bar Graph for " + Yaxis_name + " vs " + Xaxis_name + "  " + "\n product: " + productValue + "  ",
+    title: "Stacked Bar Graph for " + Yaxis_name + " vs " + Xaxis_name + "  " + "\n product: " + productValue + "  " + "ITM:"+itmValue,
     xaxis: {
       title: "Range of " + Xaxis_name + " values ",
     },
