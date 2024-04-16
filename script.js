@@ -10,7 +10,8 @@ function createBarChart(
   Xaxis_name,
   Yaxis_name,
   startDateInput,
-  endDateInput
+  endDateInput,
+  itmValue
 ) {
  
     const xArray1= XRR;
@@ -35,7 +36,7 @@ function createBarChart(
       },
     ];
     const layout1 = { 
-      title: Yaxis_name + "  vs  " + Xaxis_name + "\n product: " + productValue + "  ",
+      title: Yaxis_name + "  vs  " + Xaxis_name + "\n product: " + productValue + "  " + "ITM:"+itmValue ,
   };
   
 
@@ -55,7 +56,8 @@ function createScatterChart(
   Xaxis_name,
   Yaxis_name,
   startDateInput,
-  endDateInput
+  endDateInput,
+  itmValue
 ) {
   // const xArray2 = [1, 2, 3, 4, 5, 6, 7, 8, 9];
   // const yArray2 = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -90,7 +92,8 @@ function createLineChart(
   Xaxis_name,
   Yaxis_name,
   startDateInput,
-  endDateInput
+  endDateInput,
+  itmValue
 ) {
   const xArray3 = XRR;
   const yArray3 = YRR;
@@ -122,7 +125,8 @@ function createPieChart(
   Xaxis_name,
   Yaxis_name,
   startDateInput,
-  endDateInput
+  endDateInput,
+  itmValue
 ) {
   const xArray4 = XRR;
   const yArray4 = YRR;
@@ -143,7 +147,8 @@ function createStackChart(
   Xaxis_name,
   Yaxis_name,
   startDateInput,
-  endDateInput
+  endDateInput,
+  itmValue
 ) {
   const xArray5 = XRR;
   const yArray5 = YRR;
