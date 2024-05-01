@@ -80,15 +80,6 @@ function storeInputValues2() {
   P7Value = P7Input.value;
   P8Value = P8Input.value;
 
-  // You can do whatever you want with the values here
-  // console.log("P1:", P1Value);
-  // console.log("P2:", P2Value);
-  // console.log("P3:", P3Value);
-  // console.log("P4:", P4Value);
-  // console.log("P5:", P5Value);
-  // console.log("P6:", P6Value);
-  // console.log("P7:", P7Value);
-  // console.log("P8:", P8Value);
   ttProductCodes = [
     P1Value,
     P2Value,
@@ -99,6 +90,7 @@ function storeInputValues2() {
     P7Value,
     P8Value,
   ];
+  
 }
 
 // Add event listeners to listen for changes in input values
@@ -112,8 +104,12 @@ P7Input.addEventListener("input", storeInputValues2);
 P8Input.addEventListener("input", storeInputValues2);
 
 //START (apply buttom)
+console.log("test1:",ttProductCodes);
+
 
 document.getElementById("add_chart").addEventListener("click", function () {
+  console.log("test2:",ttProductCodes);
+  console.log("test3:",itmValue);
   selectedXAxis = document.getElementById("x-axis").value;
   selectedYAxis = document.getElementById("y-axis").value;
   selectedChartType = document.getElementById("select-charts").value;
@@ -178,42 +174,7 @@ document
         XRR = DCW.map((entry) => entry.Date);
         YRR = DCW.map((entry) => entry.DCW);
         plotchart(XRR, YRR);
-      } else if (selectedYAxis === "Change" && selectedXAxis === "Time" && productValue !== null) {
-        let ohlcData = await fetch_Data_for_ohlc(
-          startDateInput,
-          endDateInput,
-          productValue
-        );
-        const changeValues = calculateCloseOpenDifference(ohlcData);
-        console.log("Change Values:", changeValues);
-        XRR = changeValues.map((entry) => entry.Date);
-        YRR = changeValues.map((entry) => entry.CloseOpenDifference);
-        plotchart(XRR, YRR);
-
-      }
-      else if (selectedYAxis === "Change/ATR" && selectedXAxis === "Time" && productValue !== null) {
-        let globalData_atr = await fetch_Data_for_atr(
-          startDateInput,
-          endDateInput,
-          productValue
-        );
-        let ohlcData = await fetch_Data_for_ohlc(
-          startDateInput,
-          endDateInput,
-          productValue
-        );
-        console.log("Fetched data:", globalData_atr);
-        const atrValues = await calculateATR(globalData_atr);
-        console.log("ATR Values:", atrValues);
-       const normalizedATR = calculateNormalizedATR(ohlcData, atrValues)
-        console.log("Normalized ATR Values:", normalizedATR);
-
-        XRR = normalizedATR.map((entry) => entry.Date);
-        YRR = normalizedATR.map((entry) => entry.normalizedATR);
-        plotchart(XRR, YRR);
-
-
-      }else if (
+      } else if (
         selectedYAxis === "ATR" &&
         selectedXAxis === "Time" &&
         productValue !== null
@@ -815,7 +776,105 @@ YRR = commonPnL;
           XRR = all_data.map((entry) => entry.reportDate);
           YRR = all_data.map((entry) => entry.net_PnL_per_day);
           console.log("XRR test", XRR);
+          console.log("YRR: ", YRR);
           plotchart(XRR, YRR);
+        }
+      } 
+      else if (selectedYAxis === "net_equity_PnL" && selectedXAxis === "Time") {
+        fetch("pnl_productwise.json")
+          .then((response) => response.json())
+          .then((data) => {
+            // Store the data in global_Pnl_data
+            const global_Pnl_data = data;
+
+            // Call your other function and pass global_Pnl_data to it
+            otherFunction(global_Pnl_data);
+          })
+          .catch((error) => console.error("Error fetching JSON:", error));
+
+        // Define your other function
+        function otherFunction(data) {
+          // Now you can access the global_Pnl_data object here
+          console.log("Inside otherFunction:");
+          console.log(data);
+
+          // Initialize an array to store new objects
+          const newData = [];
+
+          // Iterate over each object in the array
+          data.forEach((item) => {
+            // Create a new object for each item
+            const newItem = {
+              itm: item.primaryITM,
+              reportDate: new Date(item.reportDate).toLocaleDateString("en-US"),
+              ttProductCode: item.ttProductCode,
+              grossPnL: item.netPnL,
+            };
+
+            // Push the new object into the array
+            newData.push(newItem);
+          });
+
+          // Output the new array
+          console.log("New data:", newData);
+          filterData(newData, startDateInput, endDateInput,itmValue, ttProductCodes);
+        }
+        function filterData(newData, startDateInput, endDateInput, itm, ttProductCodes) {
+          // Parse the start and end dates
+          const startDate = new Date(startDateInput);
+          const endDate = new Date(endDateInput);
+        
+          // Filter newData based on the date range, itm, and ttProductCode values
+          const filteredData = newData.filter(item => {
+            const reportDate = new Date(item.reportDate);
+            return (
+              reportDate >= startDate &&
+              reportDate <= endDate &&
+              item.itm === itm &&
+              ttProductCodes.includes(item.ttProductCode)
+            );
+          });
+        
+          // Group filtered data by reportDate
+          const groupedData = filteredData.reduce((acc, item) => {
+            const dateKey = item.reportDate;
+            acc[dateKey] = acc[dateKey] || [];
+            acc[dateKey].push(item);
+            return acc;
+          }, {});
+        
+          // Calculate net_PnL_per_day
+          const netPnLPerDayData = Object.keys(groupedData).map(dateKey => {
+            const items = groupedData[dateKey];
+            const grossPnLSum = items.reduce((sum, item) => sum + item.grossPnL, 0);
+            return { reportDate: dateKey, net_PnL_per_day: grossPnLSum };
+          });
+        
+          // Output the filtered data with net_PnL_per_day
+          console.log("Filtered data with net_PnL_per_day:", netPnLPerDayData);
+          // Output the filtered data
+          console.log("Filtered data:", filteredData);
+          chech_data(netPnLPerDayData);
+          
+          // If you want to do something else with the filtered data, you can do it here
+        }
+        
+       
+        async function chech_data(all_data) {
+          console.log("All data test", all_data);
+          
+          XRR = all_data.map((entry) => entry.reportDate);
+          YRR = all_data.map((entry) => entry.net_PnL_per_day);
+          const YRR_equity = [];
+          let sum = 0;
+          for (let i = 0; i < YRR.length; i++) {
+          sum += YRR[i];
+          YRR_equity.push(sum);
+}
+
+        console.log("YRR_equity: ", YRR_equity);
+          console.log("XRR test", XRR);
+          plotchart(XRR, YRR_equity);
         }
       } 
       else if (selectedYAxis === "netPnL" && selectedXAxis === "DCW_ATR" && productValue !== null) {
@@ -1197,104 +1256,42 @@ YRR = commonPnL;
         }
 
       }
-        else if (selectedYAxis === "net_equity_PnL" && selectedXAxis === "Time") {
-        fetch("pnl_productwise.json")
-          .then((response) => response.json())
-          .then((data) => {
-            // Store the data in global_Pnl_data
-            const global_Pnl_data = data;
+      else if (selectedYAxis === "Change" && selectedXAxis === "Time" && productValue !== null) {
+        let ohlcData = await fetch_Data_for_ohlc(
+          startDateInput,
+          endDateInput,
+          productValue
+        );
+        const changeValues = calculateCloseOpenDifference(ohlcData);
+        console.log("Change Values:", changeValues);
+        XRR = changeValues.map((entry) => entry.Date);
+        YRR = changeValues.map((entry) => entry.CloseOpenDifference);
+        plotchart(XRR, YRR);
 
-            // Call your other function and pass global_Pnl_data to it
-            otherFunction(global_Pnl_data);
-          })
-          .catch((error) => console.error("Error fetching JSON:", error));
+      }
+      else if (selectedYAxis === "Change/ATR" && selectedXAxis === "Time" && productValue !== null) {
+        let globalData_atr = await fetch_Data_for_atr(
+          startDateInput,
+          endDateInput,
+          productValue
+        );
+        let ohlcData = await fetch_Data_for_ohlc(
+          startDateInput,
+          endDateInput,
+          productValue
+        );
+        console.log("Fetched data:", globalData_atr);
+        const atrValues = await calculateATR(globalData_atr);
+        console.log("ATR Values:", atrValues);
+       const normalizedATR = calculateNormalizedATR(ohlcData, atrValues)
+        console.log("Normalized ATR Values:", normalizedATR);
 
-        // Define your other function
-        function otherFunction(data) {
-          // Now you can access the global_Pnl_data object here
-          console.log("Inside otherFunction:");
-          console.log(data);
+        XRR = normalizedATR.map((entry) => entry.Date);
+        YRR = normalizedATR.map((entry) => entry.normalizedATR);
+        plotchart(XRR, YRR);
 
-          // Initialize an array to store new objects
-          const newData = [];
 
-          // Iterate over each object in the array
-          data.forEach((item) => {
-            // Create a new object for each item
-            const newItem = {
-              itm: item.primaryITM,
-              reportDate: new Date(item.reportDate).toLocaleDateString("en-US"),
-              ttProductCode: item.ttProductCode,
-              grossPnL: item.netPnL,
-            };
-
-            // Push the new object into the array
-            newData.push(newItem);
-          });
-
-          // Output the new array
-          console.log("New data:", newData);
-          filterData(newData, startDateInput, endDateInput,itmValue, ttProductCodes);
-        }
-        function filterData(newData, startDateInput, endDateInput, itm, ttProductCodes) {
-          // Parse the start and end dates
-          const startDate = new Date(startDateInput);
-          const endDate = new Date(endDateInput);
-        
-          // Filter newData based on the date range, itm, and ttProductCode values
-          const filteredData = newData.filter(item => {
-            const reportDate = new Date(item.reportDate);
-            return (
-              reportDate >= startDate &&
-              reportDate <= endDate &&
-              item.itm === itm &&
-              ttProductCodes.includes(item.ttProductCode)
-            );
-          });
-        
-          // Group filtered data by reportDate
-          const groupedData = filteredData.reduce((acc, item) => {
-            const dateKey = item.reportDate;
-            acc[dateKey] = acc[dateKey] || [];
-            acc[dateKey].push(item);
-            return acc;
-          }, {});
-        
-          // Calculate net_PnL_per_day
-          const netPnLPerDayData = Object.keys(groupedData).map(dateKey => {
-            const items = groupedData[dateKey];
-            const grossPnLSum = items.reduce((sum, item) => sum + item.grossPnL, 0);
-            return { reportDate: dateKey, net_PnL_per_day: grossPnLSum };
-          });
-        
-          // Output the filtered data with net_PnL_per_day
-          console.log("Filtered data with net_PnL_per_day:", netPnLPerDayData);
-          // Output the filtered data
-          console.log("Filtered data:", filteredData);
-          chech_data(netPnLPerDayData);
-          
-          // If you want to do something else with the filtered data, you can do it here
-        }
-        
-       
-        async function chech_data(all_data) {
-          console.log("All data test", all_data);
-          
-          XRR = all_data.map((entry) => entry.reportDate);
-          YRR = all_data.map((entry) => entry.net_PnL_per_day);
-          const YRR_equity = [];
-          let sum = 0;
-          for (let i = 0; i < YRR.length; i++) {
-          sum += YRR[i];
-          YRR_equity.push(sum);
-}
-
-        console.log("YRR_equity: ", YRR_equity);
-          console.log("XRR test", XRR);
-          plotchart(XRR, YRR_equity);
-        }
-      } 
-      
+      }
       else if (selectedYAxis === selectedXAxis) {
         XRR = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         YRR = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -1316,8 +1313,7 @@ YRR = commonPnL;
               selectedXAxis,
               selectedYAxis,
               startDateInput,
-              endDateInput,
-             
+              endDateInput
             );
 
             break;
@@ -1330,8 +1326,7 @@ YRR = commonPnL;
               selectedYAxis,
               startDateInput,
               endDateInput,
-              productValue,
-              
+              productValue
             );
             break;
           case "Line Chart":
@@ -1342,8 +1337,7 @@ YRR = commonPnL;
               selectedXAxis,
               selectedYAxis,
               startDateInput,
-              endDateInput,
-              
+              endDateInput
             );
             break;
           case "Pie Chart":
@@ -1354,8 +1348,7 @@ YRR = commonPnL;
               selectedXAxis,
               selectedYAxis,
               startDateInput,
-              endDateInput,
-             
+              endDateInput
             );
 
             break;
@@ -1367,8 +1360,7 @@ YRR = commonPnL;
               selectedXAxis,
               selectedYAxis,
               startDateInput,
-              endDateInput,
-             
+              endDateInput
             );
           default:
             break;
