@@ -73,5 +73,34 @@ function calculateDCWATRRatio(dcwValues, atrValues) {
 
     return ratioValues;
 }
+function calculateNormalizedATR(globalData, atrValues) {
+    const normalizedATRValues = [];
+
+    for (let i = 0; i < globalData.length; i++) {
+        const { Date, Open, Close } = globalData[i];
+        const atrObj = atrValues.find(obj => obj.Date === Date);
+        if (atrObj) {
+            const atr = atrObj.ATR;
+            const normalizedATR = Math.abs((Close - Open) / atr);
+            normalizedATRValues.push({ Date, normalizedATR });
+        } else {
+            console.error(`ATR value not found for date: ${Date}`);
+        }
+    }
+
+    return normalizedATRValues;
+}
+
+function calculateCloseOpenDifference(globalData) {
+    const closeOpenDifferences = [];
+
+    for (let i = 0; i < globalData.length; i++) {
+        const { Date, Open, Close } = globalData[i];
+        const difference = Math.abs(Close - Open);
+        closeOpenDifferences.push({ Date, CloseOpenDifference: difference });
+    }
+
+    return closeOpenDifferences;
+}
 
 
