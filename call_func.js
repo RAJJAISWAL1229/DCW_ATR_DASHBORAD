@@ -178,7 +178,42 @@ document
         XRR = DCW.map((entry) => entry.Date);
         YRR = DCW.map((entry) => entry.DCW);
         plotchart(XRR, YRR);
-      } else if (
+      } else if (selectedYAxis === "Change" && selectedXAxis === "Time" && productValue !== null) {
+        let ohlcData = await fetch_Data_for_ohlc(
+          startDateInput,
+          endDateInput,
+          productValue
+        );
+        const changeValues = calculateCloseOpenDifference(ohlcData);
+        console.log("Change Values:", changeValues);
+        XRR = changeValues.map((entry) => entry.Date);
+        YRR = changeValues.map((entry) => entry.CloseOpenDifference);
+        plotchart(XRR, YRR);
+
+      }
+      else if (selectedYAxis === "Change/ATR" && selectedXAxis === "Time" && productValue !== null) {
+        let globalData_atr = await fetch_Data_for_atr(
+          startDateInput,
+          endDateInput,
+          productValue
+        );
+        let ohlcData = await fetch_Data_for_ohlc(
+          startDateInput,
+          endDateInput,
+          productValue
+        );
+        console.log("Fetched data:", globalData_atr);
+        const atrValues = await calculateATR(globalData_atr);
+        console.log("ATR Values:", atrValues);
+       const normalizedATR = calculateNormalizedATR(ohlcData, atrValues)
+        console.log("Normalized ATR Values:", normalizedATR);
+
+        XRR = normalizedATR.map((entry) => entry.Date);
+        YRR = normalizedATR.map((entry) => entry.normalizedATR);
+        plotchart(XRR, YRR);
+
+
+      }else if (
         selectedYAxis === "ATR" &&
         selectedXAxis === "Time" &&
         productValue !== null
