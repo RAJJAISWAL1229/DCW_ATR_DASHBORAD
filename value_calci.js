@@ -73,6 +73,8 @@ function calculateDCWATRRatio(dcwValues, atrValues) {
 
     return ratioValues;
 }
+
+
 function calculateNormalizedATR(globalData, atrValues) {
     const normalizedATRValues = [];
 
