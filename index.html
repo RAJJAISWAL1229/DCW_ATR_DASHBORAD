@@ -75,6 +75,7 @@
             
           </select>
         </div>
+        
         <div class="chart-selector-div">
           <label for="select-charts">Select Chart:</label>
           <select id="select-charts" name="select-charts">
@@ -85,9 +86,16 @@
             <option value="Stack Chart">Stack Chart</option>
           </select>
         </div>
+        <ul class="input-container">
+          <label for="period">Period:</label>
+          <input type="text" id="period" placeholder="" />
+          
+        </ul>
+      
 
         <button type="button" id="add_chart">ADD</button>
         <button type="button" id="Reset_last">RESET</button>
+        
       </div>
       <div class="sidebar" id="Product_PnL">
         <h2>Products</h2>
@@ -121,7 +129,7 @@
     <footer>
       <p id="demo">&copy; 2024 Futures First</p>
     </footer>
-    
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="second_autocomplete.js"></script>
     <script src="autocomplete.js"></script>
     <script src="value_calci.js"></script>
@@ -129,7 +137,9 @@
     <script src="call_func.js"></script>
     <script src="fetch_OHCL.js"></script>
     <script src="fetch_data_for_ATR.js"></script>
-    <script src="fetch_data_for_DCW.js"></script>
+    <!-- <script src="fetch_data_for_DCW.js"></script> -->
+    <script src="fetch_data_DCW.js"></script>
+    
     
   </body>
 </html>
