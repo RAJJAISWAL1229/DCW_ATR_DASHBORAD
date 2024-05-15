@@ -218,5 +218,12 @@ footer {
   max-height: 150px; /* Adjust as needed */
   z-index: 999; /* Set a high z-index value to bring it to the front */
 }
+#period {
+  width: 50px;
+  height: 25px;
+  text-align: center;
+  font-size: 14px;
+  border-radius: 0.25rem;
+}
 
 
