@@ -3,6 +3,7 @@ let productValue = null;
 let itmValue = null;
 let startDateInput = null;
 let endDateInput = null;
+let period = null;
 
 let selectedXAxis = null;
 let selectedYAxis = null;
@@ -113,6 +114,8 @@ document.getElementById("add_chart").addEventListener("click", function () {
   selectedXAxis = document.getElementById("x-axis").value;
   selectedYAxis = document.getElementById("y-axis").value;
   selectedChartType = document.getElementById("select-charts").value;
+  period = document.getElementById('period').value;
+ console.log("period:",period);
 
   function getAllInputValues() {
     var inputs = document.querySelectorAll('#Product_PnL input[type="text"]');
@@ -166,10 +169,11 @@ document
         let globalData_dcw = await fetch_Data_for_dcw(
           startDateInput,
           endDateInput,
-          productValue
+          productValue,
+          period
         );
         console.log("Fetched data:", globalData_dcw);
-        const DCW = await calculateDCW(globalData_dcw, (period = 40));
+        const DCW = await calculateDCW(globalData_dcw, (period));
         console.log("DCW Values:", DCW);
         XRR = DCW.map((entry) => entry.Date);
         YRR = DCW.map((entry) => entry.DCW);
@@ -183,10 +187,11 @@ document
         let globalData_atr = await fetch_Data_for_atr(
           startDateInput,
           endDateInput,
-          productValue
+          productValue,
+          period
         );
         console.log("Fetched data:", globalData_atr);
-        const atrValues = await calculateATR(globalData_atr);
+        const atrValues = await calculateATR(globalData_atr,period);
         console.log("ATR Values:", atrValues);
         XRR = atrValues.map((entry) => entry.Date);
         YRR = atrValues.map((entry) => entry.ATR);
@@ -200,19 +205,21 @@ document
         let globalData_atr = await fetch_Data_for_atr(
           startDateInput,
           endDateInput,
-          productValue
+          productValue,
+          period
         );
         console.log("Fetched data:", globalData_atr);
-        const atrValues = await calculateATR(globalData_atr);
+        const atrValues = await calculateATR(globalData_atr,period);
         console.log("ATR Values:", atrValues);
         //DCW values
         let globalData_dcw = await fetch_Data_for_dcw(
           startDateInput,
           endDateInput,
-          productValue
+          productValue,
+          period
         );
         console.log("Fetched data:", globalData_dcw);
-        const DCW = await calculateDCW(globalData_dcw, (period = 40));
+        const DCW = await calculateDCW(globalData_dcw, period);
         console.log("DCW Values:", DCW);
         //DCW/ATR Ratio values
         const DCW_ATR = await calculateDCWATRRatio(DCW, atrValues);
@@ -397,19 +404,21 @@ document
         let globalData_atr = await fetch_Data_for_atr(
           startDateInput,
           endDateInput,
-          productValue
+          productValue,
+          period
         );
         console.log("Fetched data:", globalData_atr);
-        const atrValues = await calculateATR(globalData_atr);
+        const atrValues = await calculateATR(globalData_atr,period);
         console.log("ATR Values:", atrValues);
         //DCW values
         let globalData_dcw = await fetch_Data_for_dcw(
           startDateInput,
           endDateInput,
-          productValue
+          productValue,
+          period
         );
         console.log("Fetched data:", globalData_dcw);
-        const DCW = await calculateDCW(globalData_dcw, (period = 40));
+        const DCW = await calculateDCW(globalData_dcw, period);
         console.log("DCW Values:", DCW);
         //DCW/ATR Ratio values
         const DCW_ATR = await calculateDCWATRRatio(DCW, atrValues);
@@ -532,10 +541,11 @@ YRR = commonPnL;
         let globalData_dcw = await fetch_Data_for_dcw(
           startDateInput,
           endDateInput,
-          productValue
+          productValue,
+          period
         );
         console.log("Fetched data:", globalData_dcw);
-        const DCW = await calculateDCW(globalData_dcw, (period = 40));
+        const DCW = await calculateDCW(globalData_dcw, period);
         console.log("DCW Values:", DCW);
         
         let DCW_date = DCW.map((entry) => entry.Date);
@@ -654,10 +664,11 @@ YRR = commonPnL;
         let globalData_atr = await fetch_Data_for_atr(
           startDateInput,
           endDateInput,
-          productValue
+          productValue,
+          period
         );
         console.log("Fetched data:", globalData_atr);
-        const atrValues = await calculateATR(globalData_atr);
+        const atrValues = await calculateATR(globalData_atr,period);
         console.log("ATR Values:", atrValues);
         
         let ATR_date = atrValues.map((entry) => entry.Date);
@@ -964,19 +975,21 @@ YRR = commonPnL;
         let globalData_atr = await fetch_Data_for_atr(
           startDateInput,
           endDateInput,
-          productValue
+          productValue,
+          period
         );
         console.log("Fetched data:", globalData_atr);
-        const atrValues = await calculateATR(globalData_atr);
+        const atrValues = await calculateATR(globalData_atr,period);
         console.log("ATR Values:", atrValues);
         //DCW values
         let globalData_dcw = await fetch_Data_for_dcw(
           startDateInput,
           endDateInput,
-          productValue
+          productValue,
+          period
         );
         console.log("Fetched data:", globalData_dcw);
-        const DCW = await calculateDCW(globalData_dcw, (period = 40));
+        const DCW = await calculateDCW(globalData_dcw, period = 40);
         console.log("DCW Values:", DCW);
         //DCW/ATR Ratio values
         const DCW_ATR = await calculateDCWATRRatio(DCW, atrValues);
@@ -1098,10 +1111,11 @@ YRR = commonPnL;
         let globalData_atr = await fetch_Data_for_atr(
           startDateInput,
           endDateInput,
-          productValue
+          productValue,
+          period
         );
         console.log("Fetched data:", globalData_atr);
-        const atrValues = await calculateATR(globalData_atr);
+        const atrValues = await calculateATR(globalData_atr,period);
         console.log("ATR Values:", atrValues);
         
         let ATR_date = atrValues.map((entry) => entry.Date);
@@ -1221,10 +1235,11 @@ YRR = commonPnL;
         let globalData_dcw = await fetch_Data_for_dcw(
           startDateInput,
           endDateInput,
-          productValue
+          productValue,
+          period
         );
         console.log("Fetched data:", globalData_dcw);
-        const DCW = await calculateDCW(globalData_dcw, (period = 40));
+        const DCW = await calculateDCW(globalData_dcw, period = 40);
         console.log("DCW Values:", DCW);
         
         let DCW_date = DCW.map((entry) => entry.Date);
@@ -1273,7 +1288,8 @@ YRR = commonPnL;
         let globalData_atr = await fetch_Data_for_atr(
           startDateInput,
           endDateInput,
-          productValue
+          productValue,
+          period
         );
         let ohlcData = await fetch_Data_for_ohlc(
           startDateInput,
@@ -1281,7 +1297,7 @@ YRR = commonPnL;
           productValue
         );
         console.log("Fetched data:", globalData_atr);
-        const atrValues = await calculateATR(globalData_atr);
+        const atrValues = await calculateATR(globalData_atr,period);
         console.log("ATR Values:", atrValues);
        const normalizedATR = calculateNormalizedATR(ohlcData, atrValues)
         console.log("Normalized ATR Values:", normalizedATR);
