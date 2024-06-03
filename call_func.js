@@ -209,9 +209,9 @@ document
           period
         );
         console.log("Fetched data:", globalData_atr);
-        const atrValues = await calculateATR(globalData_atr,period);
+        const atrValues = await calculateATR(globalData_atr);
         console.log("ATR Values:", atrValues);
-        //DCW values
+        //DCW valuesf
         let globalData_dcw = await fetch_Data_for_dcw(
           startDateInput,
           endDateInput,
@@ -408,7 +408,7 @@ document
           period
         );
         console.log("Fetched data:", globalData_atr);
-        const atrValues = await calculateATR(globalData_atr,period);
+        const atrValues = await calculateATR(globalData_atr);
         console.log("ATR Values:", atrValues);
         //DCW values
         let globalData_dcw = await fetch_Data_for_dcw(
@@ -979,7 +979,7 @@ YRR = commonPnL;
           period
         );
         console.log("Fetched data:", globalData_atr);
-        const atrValues = await calculateATR(globalData_atr,period);
+        const atrValues = await calculateATR(globalData_atr);
         console.log("ATR Values:", atrValues);
         //DCW values
         let globalData_dcw = await fetch_Data_for_dcw(
